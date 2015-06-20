@@ -80,7 +80,13 @@ def parse_requirements(pypi_requirements, cvs_requirements):
                 except pkg_resources.DistributionNotFound:
                     print 'Please install [%s]' % requirement
     # end repo temp fix
-    return requirements
+
+    full_requirements = []
+    for req in requirements:
+        full_requirements.append(req)
+        full_requirements.extend(pkg_resources.get_provider(req).requires())
+
+    return full_requirements
 
 
 def compute_package_links(requirements):
